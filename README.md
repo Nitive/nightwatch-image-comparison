@@ -1,13 +1,33 @@
 # Nightwatch Image Comparison
 
 Nightwatch assertions to compare screenshots in your tests.
-
-## Currently under development and contains a bunch of hardcoded options. Do not use yet, but please let me know if you want too.
+Currently under development and contains a bunch of hardcoded options. Do not use yet, but please let me know if you want too.
 
 ## Credits
 
 The module is now based on [webdriver-image-comparison module](https://github.com/wswebcreation/webdriver-image-comparison).
 Thanks a lot [Wim Selles](https://github.com/wswebcreation) for creating and open sourcing it!
+
+## Setting up
+
+1. Install module `npm install --save-dev @nitive/nightwatch-image-comparison`
+2. Configure module in `nightwatch.conf.js`
+
+```js
+const path = require('path')
+const nightwatchImageComparison = require('@nitive/nightwatch-image-comparison')
+
+module.exports = {
+  globals: {
+    screenshots: {
+      testsRootDir: path.join(__dirname, 'tests'), // required
+      screenshotsRootDir: path.join(__dirname, 'screenshots'), // required
+      skipScreenshotAssertions: false, // default: false
+    },
+  },
+  custom_assertions_path: [nightwatchImageComparison.assertionsPath],
+}
+```
 
 ## Usage examples
 

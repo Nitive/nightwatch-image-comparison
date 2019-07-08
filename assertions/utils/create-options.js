@@ -2,8 +2,8 @@ const path = require('path')
 const { defaultOptions } = require('webdriver-image-comparison/build/helpers/options')
 const { getElementsBySelectors } = require('./elements')
 
-function getScreenshotFolder({ testsBasePath, testFileName }) {
-  const parts = path.relative(testsBasePath, testFileName).split(path.sep)
+function getScreenshotFolder({ testsRootDir, testFileName }) {
+  const parts = path.relative(testsRootDir, testFileName).split(path.sep)
 
   return parts
     .slice(0, -1)
@@ -11,12 +11,11 @@ function getScreenshotFolder({ testsBasePath, testFileName }) {
     .join(path.sep)
 }
 
-exports.createOptions = async (client, browserName, options = {}) => {
+exports.createOptions = async (client, browserName, testsRootDir, options = {}) => {
   const { hideSelectors = [], removeSelectors = [], allowedMisMatchPercentage, ...opts } = options
 
-  const testsBasePath = path.join(__dirname, '../../tests/')
   const screenshotFolder = getScreenshotFolder({
-    testsBasePath,
+    testsRootDir,
     testFileName: client.currentTest.module,
   })
 

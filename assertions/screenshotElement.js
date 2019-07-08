@@ -13,7 +13,6 @@ exports.assertion = function screenshotElement(selector, description, methodOpti
       methodOptions,
       check: async ({ methods, instanceData, folders, options }) => {
         const element = await getElement(this.api, selector)
-        console.log('element', element)
         return checkElement(methods, instanceData, folders, element, description, options)
       },
       callback,

@@ -70,7 +70,26 @@ function removeClassWhichFixBlinkingCursorsInScreenshot() {
 }
 /* eslint-enable */
 
+function createNotDefinedError(optionName) {
+  return new Error(
+    `${optionName} is not defined. Define it in your nightwatch.conf.js (https://github.com/Nitive/nightwatch-image-comparison)`
+  )
+}
+
+function validateGlobalOptions(options) {
+  if (!options.testsRootDir) {
+    throw createNotDefinedError('testsRootDir')
+  }
+
+  if (!options.screenshotsRootDir) {
+    throw createNotDefinedError('screenshotsRootDir')
+  }
+}
+
 function takeScreenshot({ client, description, check, methodOptions, callback }) {
+  const globalOptions = client.globals.screenshots || {}
+  validateGlobalOptions(globalOptions)
+
   if (client.globals.skipScreenshotAssertions) {
     console.warn(`Skip screenshot assertion: ${description}`)
     client.perform(() => {
@@ -79,20 +98,12 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
     return
   }
 
-  if (!client.currentTest) {
-    throw new Error(
-      'client.currentTest is not defined. This is probably because you are using mocha runner. ' +
-        'Using currentTest is not supported for mocha runner but you can use a workaround ' +
-        '(TODO: add link)'
-    )
-  }
-
   const instanceData = getInstanceData(client.capabilities)
 
   const folders = {
-    actualFolder: path.join(__dirname, '../../screenshots/actual'),
-    baselineFolder: path.join(__dirname, '../../screenshots/base'),
-    diffFolder: path.join(__dirname, '../../screenshots/diff'),
+    actualFolder: path.join(globalOptions.screenshotsRootDir, 'actual'),
+    baselineFolder: path.join(globalOptions.screenshotsRootDir, 'base'),
+    diffFolder: path.join(globalOptions.screenshotsRootDir, 'diff'),
   }
 
   const methods = {
@@ -116,7 +127,7 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
     },
   }
 
-  createOptions(client, instanceData.browserName, methodOptions).then(
+  createOptions(client, instanceData.browserName, globalOptions.testsRootDir, methodOptions).then(
     ({ options, allowedMisMatchPercentage }) => {
       return check({
         methods,
@@ -125,7 +136,7 @@ function takeScreenshot({ client, description, check, methodOptions, callback })
         options,
       })
         .then(result => {
-          if (addContext && client.currentTest.mochaTestContext) {
+          if (addContext && client.currentTest && client.currentTest.mochaTestContext) {
             const ctx = client.currentTest.mochaTestContext
 
             addContext(ctx, {
