@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "git@github.com:Nitive/nightwatch-image-comparison.git",
   "author": "Maxim Samoilov <nitive@icloud.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^1.18.2"
+  }
 }
