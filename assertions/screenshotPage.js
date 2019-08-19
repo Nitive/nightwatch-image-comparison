@@ -2,7 +2,6 @@ const checkFullPageScreen = require('webdriver-image-comparison/build/commands/c
   .default
 const { takeScreenshot } = require('./utils/take-screenshot')
 const { addAssertionMethods } = require('./utils/screenshot-assertion')
-const { createOptions } = require('./utils/create-options')
 
 exports.assertion = function screenshotPage(description, methodOptions) {
   addAssertionMethods(this, description)

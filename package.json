@@ -10,7 +10,7 @@
     "prettier": "^1.18.2"
   },
   "dependencies": {
-    "webdriver-image-comparison": "^0.6.0"
+    "webdriver-image-comparison": "^0.8.0"
   },
   "optionalDependencies": {
     "mochawesome": "^4.0.1"
