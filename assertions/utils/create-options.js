@@ -12,7 +12,12 @@ function getScreenshotFolder({ testsRootDir, testFileName }) {
 }
 
 exports.createOptions = async (client, browserName, testsRootDir, options = {}) => {
-  const { hideSelectors = [], removeSelectors = [], allowedMisMatchPercentage, ...opts } = options
+  const {
+    hideSelectors = [],
+    removeSelectors = [],
+    allowedMisMatchPercentage = 0,
+    ...opts
+  } = options
 
   const screenshotFolder = getScreenshotFolder({
     testsRootDir,
